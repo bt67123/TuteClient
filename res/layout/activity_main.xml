@@ -1,0 +1,45 @@
+<!-- 
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/pager"
+    tools:context=".MainActivity" >
+
+    <android.support.v4.view.PagerTabStrip
+        android:id="@+id/tab_strip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="#000"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:paddingBottom="8dp"
+        />
+
+</android.support.v4.view.ViewPager>
+
+ -->
+ 
+ 
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    
+    <FrameLayout 
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    
+    <com.capricorn.RayMenu
+        android:id="@+id/ray_menu"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>
