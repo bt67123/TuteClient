@@ -1,94 +1,104 @@
 package cn.edu.tute.tuteclient;
 
-import com.capricorn.RayMenu;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import cn.edu.tute.tuteclient.view.ClasstableFragment;
+import cn.edu.tute.tuteclient.view.NewsFragment;
 import cn.edu.tute.tuteclient.view.PersonFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends SherlockFragmentActivity {
 	
-	private static final int[] ITEM_DRAWABLES = { R.drawable.composer_camera, R.drawable.composer_music,
-		R.drawable.composer_place};
+	private static final String[] TITLES = new String[] { "课表", "通知", "我" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		initMenu();
+		initView();
 	}
 	
-	private void initMenu() {
-		RayMenu menu = (RayMenu) findViewById(R.id.ray_menu);
-		final int itemCount = ITEM_DRAWABLES.length;
-		for (int i = 0; i < itemCount; i++) {
-		    ImageView item = new ImageView(this);
-		    item.setImageResource(ITEM_DRAWABLES[i]);
+	private void initView() {
+        FragmentPagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
 
-		    final int position = i;
-		    menu.addItem(item, new View.OnClickListener() {
+        ViewPager pager = (ViewPager)findViewById(R.id.pager);
+        pager.setAdapter(adapter);
 
-		        @Override
-		        public void onClick(View v) {
-		            Fragment fragment = new PersonFragment();
-		            switch (position) {
-					case 0:
-						fragment = new PersonFragment();
-						Bundle args = new Bundle();
-						Intent intent = getIntent();
-						Bundle bundle = intent.getExtras();
-						String personName= bundle.getString("name");
-						int collegeID = bundle.getInt("collegeID");
-						args.putString("name", personName);
-						args.putInt("collegeID", collegeID);
-						fragment.setArguments(args);
-						
-						break;
-
-					case 1:
-						fragment = new ClasstableFragment();
-					default:
-						break;
-					}
-		            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-					fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-		        }
-		    });// Add a menu item
-		}
-	}
+        TitlePageIndicator mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
+        mIndicator.setViewPager(pager);
+	} 
 	
-	public class MyFragment extends Fragment {
-		public static final String ARG_SECTION_NUMBER = "section_number";
-		
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			TextView textView = new TextView(getActivity());
-			textView.setGravity(Gravity.CENTER);
-			Bundle args = getArguments();
-			textView.setText(args.getInt(ARG_SECTION_NUMBER) + "");
-			textView.setTextSize(30);
-			return textView;
-		}
-	}
+    private class PagerAdapter extends FragmentPagerAdapter {
+        public PagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
+        @Override
+        public Fragment getItem(int position) {
+        	Fragment fragment;
+        	switch (position) {
+			case 0:
+				fragment = new ClasstableFragment();
+				return fragment; 
+			case 1:
+				fragment = new NewsFragment();
+				return fragment;
+			case 2:
+				fragment = new PersonFragment();
+				Bundle args = new Bundle();
+				Intent intent = getIntent();
+				Bundle bundle = intent.getExtras();
+				String personName= bundle.getString("name");
+				int collegeID = bundle.getInt("collegeID");
+				args.putString("name", personName);
+				args.putInt("collegeID", collegeID);
+				fragment.setArguments(args);
+				return fragment;
+			}
+        	return null;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+        	return TITLES[position];
+        }
+
+        @Override
+        public int getCount() {
+        	return TITLES.length;
+        }
+    }
+
+	
+	@Override
+	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.main, menu); 
+		return super.onCreateOptionsMenu(menu);
+	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			break;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+//		super.onSaveInstanceState(outState);
+	}
 }

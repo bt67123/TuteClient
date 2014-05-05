@@ -3,4 +3,13 @@
     
     <color name="write">#fff</color>
     <color name="black">#000</color>
+    <color name="write1">#f6f5ec</color>
+    <color name="green1">#65c294</color>
+    <color name="blue1">#426ab3</color>
+    <color name="red1">#f15b6c</color>
+
+    <color name="lg1">#109eff</color>
+    <color name="lg2">#4169e1</color>
+    <color name="lg3">#00ced1</color>
+    <color name="lg4">#1e50a2</color>
 </resources>

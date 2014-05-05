@@ -8,7 +8,8 @@
     <TableLayout 
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/write">
 
         <TableRow 
             android:layout_width="match_parent"
@@ -48,13 +49,12 @@
     android:stretchMode="columnWidth"
     android:horizontalSpacing="1dp"
     android:verticalSpacing="1dp"
-    android:background="#000"
-    android:layout_width="match_parent"
+    android:background="@color/write1"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@id/title" >
-    
-
-    
 </GridView>
+    
+    
 
 </RelativeLayout>

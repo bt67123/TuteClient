@@ -3,19 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <Button 
-        android:id="@+id/bt_fresh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/fresh"
-        />
+   
 
+    <!-- 
     <ListView 
         android:id="@+id/lv_news"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+     -->
         
-    
+   <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/lv_news"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="#19000000"
+        android:dividerHeight="4dp"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true" />
 
+    <ScrollView android:id="@+id/empty"  
+        android:layout_width="fill_parent"  
+        android:layout_height="fill_parent"  
+        android:fillViewport="true">  
+  
+        <LinearLayout  
+            android:layout_width="fill_parent"  
+            android:layout_height="wrap_content"  
+            android:orientation="vertical">  
+  
+            <TextView  
+                android:id="@+id/emptyText"  
+                android:layout_width="fill_parent"  
+                android:layout_height="fill_parent"  
+                android:text="下拉刷新"  
+                android:textSize="20sp"  
+                android:textColor="?android:attr/textColorSecondary"  
+                android:paddingLeft="10dip"  
+                android:paddingRight="10dip"  
+                android:paddingTop="10dip"  
+                android:lineSpacingMultiplier="0.92"  
+                android:gravity="center" />  
+        </LinearLayout>  
+    </ScrollView>  
+   
 </LinearLayout>

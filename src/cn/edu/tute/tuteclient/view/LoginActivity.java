@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.capricorn.RayMenu;
 
 import cn.edu.tute.tuteclient.MainActivity;
@@ -25,7 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends SherlockActivity {
 		private static final int[] ITEM_DRAWABLES = { R.drawable.composer_camera, R.drawable.composer_music,
 			R.drawable.composer_place, R.drawable.composer_sleep, R.drawable.composer_thought, R.drawable.composer_with };
 	
@@ -51,6 +52,9 @@ public class LoginActivity extends Activity {
 				intent.putExtras(args);
 				System.out.println("Login: " + data);
 				LoginActivity.this.startActivity(intent);
+			} else if(msg.what == 0x110) {
+				progressDialog.cancel();
+				Toast.makeText(LoginActivity.this, "账号或者密码有误", Toast.LENGTH_LONG).show();
 			}
 		}
 	};
@@ -99,12 +103,12 @@ public class LoginActivity extends Activity {
 							data = data.substring(8, data.length()-1);
 							data = data.replace("\\", "");
 							person = JsonService.getPerson(data);
+        					System.out.println(data);
+        					mHandler.sendEmptyMessage(0x111);
 						} catch (JSONException e) {
-							System.out.println("null");
 							e.printStackTrace();
+							mHandler.sendEmptyMessage(0x110);
 						}
-    					System.out.println(data);
-    					mHandler.sendEmptyMessage(0x111);
 					} catch (ClientProtocolException e) {
 						e.printStackTrace();
 					} catch (IOException e) {

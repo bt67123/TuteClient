@@ -23,7 +23,7 @@
  -->
  
  
-<RelativeLayout
+<!-- <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,10 +36,36 @@
     
     <com.capricorn.RayMenu
         android:id="@+id/ray_menu"
-        android:layout_width="fill_parent"
+        android:layout_width="280dp"
         android:layout_height="60dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
         android:layout_alignParentBottom="true"
         />
-</RelativeLayout>
+</RelativeLayout> -->
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/indicator"
+        android:padding="10dip"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        app:footerColor="#FFAA2222"
+        app:footerIndicatorHeight="3dp"
+        app:footerIndicatorStyle="triangle"
+        android:textColor="#AA000000"
+        app:selectedColor="#FF000000"
+        />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+</LinearLayout>

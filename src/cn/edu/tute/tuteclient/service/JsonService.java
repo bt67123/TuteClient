@@ -24,6 +24,10 @@ public class JsonService {
 		JSONObject jsonObject = new JSONObject(str);
 		String name      = jsonObject.getJSONArray("login").getJSONObject(0).getString("name");
 		int    collegeID = jsonObject.getJSONArray("login").getJSONObject(0).getInt("collegeID");
+		if (name.equals("")) {
+			System.out.println("zmyw");
+			throw new JSONException("账号或密码有误");
+		}
 		return new Person(name, collegeID);
 	}
 	

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
@@ -13,10 +14,12 @@ import cn.edu.tute.tuteclient.domain.Course;
 import cn.edu.tute.tuteclient.httpclientservice.HttpClientService;
 import cn.edu.tute.tuteclient.service.JsonService;
 import android.R.integer;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,37 +39,20 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class ClasstableFragment extends Fragment {
 	public static final String ARG_CLASSTABLE = "ARG_CLASSTABLE";
+	public static final int[] colorID = {R.color.lg1, R.color.lg2, R.color.lg3, R.color.lg4};
 	
 	public static String classtableData = "";
 	private List<Course> courses = new ArrayList<Course>();
 
-	Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			if (msg.what == 0x222) {
-				progressDialog.cancel();
-				
-				for (Course course : courses) {
-					int r = course.getCourseTime().getDayOfWeek();
-					int c = course.getCourseTime().getCourseOfDay();
-					adapterData[r + c*5] = course;
-				}
-				
-				gv_classtable.setAdapter(new ClasstableGridViewAdapter());
-
-			}
-		}
-	};
+    static final int row = 5;
+    static final int column = 5;
+    private static Course[] adapterData = new Course[row*column];
 	
 
     private ProgressDialog progressDialog;
     private GridView gv_classtable;
     
     
-    static final int row = 5;
-    static final int column = 5;
-    private Course[] adapterData = new Course[row*column];
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,28 +68,11 @@ public class ClasstableFragment extends Fragment {
 	
 	public void initClassTableData() {
 		if (classtableData != "") {
+		    gv_classtable.setAdapter(new ClasstableGridViewAdapter());
 			return;
 		} else {
-			new Thread(){
-				@Override
-				public void run() {
-					try {
-						classtableData = HttpClientService.getData(HttpClientService.URL_COURSE);
-						try {
-							courses = JsonService.getCourse(classtableData);
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-						mHandler.sendEmptyMessage(0x222);
-					} catch (ClientProtocolException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}.start();
-    		progressDialog = new ProgressDialog(getActivity());
-	    	progressDialog.show();
+
+			new MyAsyncTask().execute(0x123);
 		}
 	}
 	
@@ -139,6 +108,9 @@ public class ClasstableFragment extends Fragment {
 			TextView tv_course = (TextView) convertView.findViewById(R.id.tv_course);
 			if (getItem(position) != null) {
     			tv_course.setText(getItem(position).getName());
+    			Random random = new Random();
+    			int r = random.nextInt(colorID.length);
+    			tv_course.setBackgroundColor(getActivity().getResources().getColor(colorID[r]));
 			}
 			tv_course.setOnClickListener(new CourseClickListener(position));
 			return convertView;
@@ -169,6 +141,49 @@ public class ClasstableFragment extends Fragment {
 			
 		}
 		
+	}
+	
+	
+	class MyAsyncTask extends AsyncTask<Integer, Integer, String> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+    		progressDialog = new ProgressDialog(getActivity());
+	    	progressDialog.show();
+
+		}
+
+		@Override
+		protected String doInBackground(Integer... params) {
+			try {
+				classtableData = HttpClientService.getData(HttpClientService.URL_COURSE);
+				try {
+					courses = JsonService.getCourse(classtableData);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return "success";
+	    }
+		
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			progressDialog.cancel();
+			
+			for (Course course : courses) {
+				int r = course.getCourseTime().getDayOfWeek();
+				int c = course.getCourseTime().getCourseOfDay();
+				adapterData[r + c*5] = course;
+			}
+			
+			gv_classtable.setAdapter(new ClasstableGridViewAdapter());
+		}
 	}
 
 }
