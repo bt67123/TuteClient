@@ -6,7 +6,10 @@ import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.capricorn.RayMenu;
+import com.devspark.appmsg.AppMsg;
 
 import cn.edu.tute.tuteclient.MainActivity;
 import cn.edu.tute.tuteclient.R;
@@ -54,7 +57,7 @@ public class LoginActivity extends SherlockActivity {
 				LoginActivity.this.startActivity(intent);
 			} else if(msg.what == 0x110) {
 				progressDialog.cancel();
-				Toast.makeText(LoginActivity.this, "账号或者密码有误", Toast.LENGTH_LONG).show();
+				AppMsg.makeText(LoginActivity.this, "账号或者密码有误", AppMsg.STYLE_ALERT).show();
 			}
 		}
 	};
@@ -63,63 +66,62 @@ public class LoginActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		Button btn_login = (Button) findViewById(R.id.btn_login);
-		btn_login.setOnClickListener(new LoginBtnClickListener());
 		
 		et_account = (EditText) findViewById(R.id.et_account);
 		et_password = (EditText) findViewById(R.id.et_password);
 		
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
 		
-
-		RayMenu menu = (RayMenu) findViewById(R.id.ray_menu);
-		final int itemCount = ITEM_DRAWABLES.length;
-		for (int i = 0; i < itemCount; i++) {
-		    ImageView item = new ImageView(this);
-		    item.setImageResource(ITEM_DRAWABLES[i]);
-
-		    final int position = i;
-		    menu.addItem(item, new OnClickListener() {
-
-		        @Override
-		        public void onClick(View v) {
-		            Toast.makeText(LoginActivity.this, "position:" + position, Toast.LENGTH_SHORT).show();
-		        }
-		    });// Add a menu item
-		}
 	}
 	
-	private class LoginBtnClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			account = et_account.getText().toString();
-			password = et_password.getText().toString();
-			new Thread() {
-				@Override
-				public void run() {
+	
+	private void login() {
+		account = et_account.getText().toString();
+		password = et_password.getText().toString();
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					data = HttpClientService.getLoginData(HttpClientService.URL_LOGIN, account, password);
 					try {
-						data = HttpClientService.getLoginData(HttpClientService.URL_LOGIN, account, password);
-						try {
-							data = data.substring(8, data.length()-1);
-							data = data.replace("\\", "");
-							person = JsonService.getPerson(data);
-        					System.out.println(data);
-        					mHandler.sendEmptyMessage(0x111);
-						} catch (JSONException e) {
-							e.printStackTrace();
-							mHandler.sendEmptyMessage(0x110);
-						}
-					} catch (ClientProtocolException e) {
+						data = data.substring(8, data.length()-1);
+						data = data.replace("\\", "");
+						person = JsonService.getPerson(data);
+    					System.out.println(data);
+    					mHandler.sendEmptyMessage(0x111);
+					} catch (JSONException e) {
 						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
+						mHandler.sendEmptyMessage(0x110);
 					}
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			}.start();
-    		progressDialog = new ProgressDialog(LoginActivity.this);
-    		progressDialog.show();
+			}
+		}.start();
+		progressDialog = new ProgressDialog(LoginActivity.this);
+		progressDialog.show();
+	} 
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.login, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_check:
+			login();
+			break;
+
+		default:
+			break;
 		}
-		
+    	return super.onOptionsItemSelected(item);
 	}
 	
 }

@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:orientation="horizontal" >
+    android:layout_height="wrap_content"
+    >
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
     
     <TextView 
         android:id="@+id/tv_title"
-        android:layout_width="260dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"/>
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="18sp"/>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        >
+        
 
     <TextView 
         android:id="@+id/tv_pub_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+        />
+    </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

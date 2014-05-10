@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.R.integer;
+import android.text.Html;
 
 
 import cn.edu.tute.tuteclient.domain.Course;
@@ -70,19 +71,26 @@ public class JsonService {
 	}
 	
 	
-	public static List<News> getNews(String str) throws JSONException {
+	public static List<News> getNews(String str, String type) throws JSONException {
 		JSONObject jsonObject = new JSONObject(str);
-		JSONArray jsonArray = jsonObject.getJSONArray("news1");
+		JSONArray jsonArray = jsonObject.getJSONArray(type);
 		List<News> news = new ArrayList<News>();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			String id        = jsonArray.getJSONObject(i).getString("Id");
 			String title     = jsonArray.getJSONObject(i).getString("NewsTitle");
-			String type      = jsonArray.getJSONObject(i).getString("NewsType");
+			String newstype      = jsonArray.getJSONObject(i).getString("NewsType");
 			String pubDate   = jsonArray.getJSONObject(i).getString("puDate");
 			String pubPerson = jsonArray.getJSONObject(i).getString("personname");
-			news.add(new News(id, title, type, pubDate, pubPerson));
+			news.add(new News(id, title, newstype, pubDate, pubPerson));
 		}
 		System.out.println("getNews");
 		return news;
+	}
+	
+	public static CharSequence getNewsContent(String str) throws JSONException {
+		JSONObject jsonObject = new JSONObject(str);
+		JSONArray jsonArray = jsonObject.getJSONArray("newsdtl");
+		String content = jsonArray.getJSONObject(0).getString("NewsContent");
+		return Html.fromHtml(content);
 	}
 }

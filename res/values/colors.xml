@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <color name="write">#fff</color>
+    <color name="white">#fff</color>
     <color name="black">#000</color>
-    <color name="write1">#f6f5ec</color>
+    <color name="white1">#f6f5ec</color>
     <color name="green1">#65c294</color>
     <color name="blue1">#426ab3</color>
+    <color name="red0">#FFAA2222</color>
     <color name="red1">#f15b6c</color>
+    <color name="red2">#aa4630</color>
+    <color name="red3">#e98d70</color>
+
 
     <color name="lg1">#109eff</color>
     <color name="lg2">#4169e1</color>

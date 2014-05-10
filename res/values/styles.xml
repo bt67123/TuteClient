@@ -17,4 +17,26 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    
+    
+    <!-- 继承ActionBar父类样式-->
+    <style name="Theme.DEMO" parent="Theme.Sherlock.Light">
+        <item name="actionBarStyle">@style/Widget.DEMO.ActionBar</item>
+        <item name="android:actionBarStyle">@style/Widget.DEMO.ActionBar</item>
+    </style> 
+    <!-- 标题栏的样式  为了兼容考虑，所有样式的相关item需要写2遍 -->
+    <style name="Widget.DEMO.ActionBar" parent="Widget.Sherlock.ActionBar.Solid">   
+        <item name="background">#1791d2</item>
+        <item name="backgroundStacked">#1791d2</item>
+        <item name="backgroundSplit">#1791d2</item>
+        <item name="titleTextStyle">@style/Widget.DEMO.ActionBar.Title</item>
+        <item name="android:background">#1791d2</item>
+        <item name="android:backgroundStacked">#1791d2</item>
+        <item name="android:backgroundSplit">#1791d2</item>
+        <item name="android:titleTextStyle">@style/Widget.DEMO.ActionBar.Title</item>
+    </style>
+    <!-- 标题栏的标题样式 -->
+    <style name="Widget.DEMO.ActionBar.Title" parent="@android:TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#fff</item>
+    </style>
 </resources>

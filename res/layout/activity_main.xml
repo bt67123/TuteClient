@@ -55,7 +55,7 @@
         android:padding="10dip"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        app:footerColor="#FFAA2222"
+        android:background="@color/white"
         app:footerIndicatorHeight="3dp"
         app:footerIndicatorStyle="triangle"
         android:textColor="#AA000000"
@@ -66,6 +66,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@color/white"
         />
 
 </LinearLayout>

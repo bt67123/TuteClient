@@ -8,7 +8,7 @@
         android:id="@+id/tv_course"
         android:layout_height="60dp"
         android:layout_width="match_parent"
-        android:textColor="@color/write"
+        android:textColor="@color/white"
         android:gravity="center"
         />
 

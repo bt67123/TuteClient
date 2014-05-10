@@ -7,6 +7,7 @@ public class News {
 	private String type;
 	private String pubDate;
 	private String pubPerson;
+	private CharSequence content;
 	
 	public News(String id, String title, String type, String pubDate, String pubPerson) {
 		this.setId(id);
@@ -14,6 +15,11 @@ public class News {
 		this.setPubDate(pubDate);
 		this.setPubPerson(pubPerson);
 		this.setType(type);
+		content = "";
+	}
+	
+	public CharSequence getContent() {
+		return content;
 	}
 	
 	public String getType() {
@@ -35,6 +41,10 @@ public class News {
 	
 	public String getPubPerson() {
 		return pubPerson;
+	}
+	
+	public void setContent(CharSequence content) {
+		this.content = content;
 	}
 	
 	public void setId(String id) {

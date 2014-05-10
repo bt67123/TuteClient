@@ -1,6 +1,9 @@
 package cn.edu.tute.tuteclient.httpclientservice;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -16,15 +19,17 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import cn.edu.tute.tuteclient.R.color;
+
 public class HttpClientService {
 	public static final String URL_LOGIN    = "http://202.113.244.45:8080/api/User";
 	public static final String URL_HOME     = "http://202.113.244.45:8080/api/Home";
 	public static final String URL_COURSE   = "http://202.113.244.45:8080/api/Course";
 	public static final String URL_NOTICE_0 = "http://202.113.244.45:8080/api/Notice?newsType=0";
 	public static final String URL_NOTICE_1 = "http://202.113.244.45:8080/api/Notice?newsType=1";
-	public static final String URL_NOTICE_2 = "http://202.113.244.45:8080/api/Notice?newsType=2";
 	public static final String URL_NOTICE_3 = "http://202.113.244.45:8080/api/Notice?newsType=3";
 	public static final String URL_NOTICE_4 = "http://202.113.244.45:8080/api/Notice?newsType=4";
+	public static final String URL_NOTICE = "http://202.113.244.45:8080/api/Notice/";
 	
 	private static HttpClient httpClient;
 
@@ -54,11 +59,15 @@ public class HttpClientService {
         String line = "";  
         String result = "result:";
         while((line = rd.readLine()) != null) {  
+        	System.out.println(line);
         	result += line;
 	    } 
 		result = result.substring(8, result.length()-1);
-		result = result.replace("\\", "");
+
+		result = result.replace("\r\n", "").replace("\\\"", "\"").replace("\\\\", "\\");
+		System.out.println(result);
 		return result;
 	}
+	
 
 }
