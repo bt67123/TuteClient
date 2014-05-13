@@ -52,9 +52,10 @@
     android:background="@color/white1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@id/title" >
+    android:layout_below="@id/title" 
+    >
 </GridView>
     
-    
+        
 
 </RelativeLayout>

@@ -23,7 +23,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	
 	private ResideMenu resideMenu;
 	
-	private static final String[] TITLES = new String[] { "课表", "通知", "我" };
+	private static final String[] TITLES = new String[] { "课表", "通知", "活动签到" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	private void initMenu() {
 		// attach to current activity;
         resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.drawable.menu_background);
+        resideMenu.setBackground(R.drawable.stars);
         resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);
 	}
@@ -143,11 +143,20 @@ public class MainActivity extends SherlockFragmentActivity {
 //		super.onSaveInstanceState(outState);
 	}
 	
+	
+	private long exitTime = 0;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if(keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
 	    	if (resideMenu.isOpened()) {
 	    		resideMenu.closeMenu();
+			} else {
+				if (System.currentTimeMillis()-exitTime > 2000) {
+					Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+    				exitTime = System.currentTimeMillis();
+				} else {
+					System.exit(0);
+				}
 			}
 	        return true;
 	    } else if(keyCode == KeyEvent.KEYCODE_MENU) {

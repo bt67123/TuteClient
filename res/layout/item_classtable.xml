@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@drawable/bg_item_classtable"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content" >
     
     <TextView
         android:id="@+id/tv_course"
-        android:layout_height="60dp"
+        android:layout_height="90dp"
         android:layout_width="match_parent"
+        android:padding="5dp"
         android:textColor="@color/white"
-        android:gravity="center"
         />
 
 </RelativeLayout>

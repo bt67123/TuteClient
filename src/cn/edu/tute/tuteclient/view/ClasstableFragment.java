@@ -9,6 +9,9 @@ import java.util.Random;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshGridView;
+
 import cn.edu.tute.tuteclient.R;
 import cn.edu.tute.tuteclient.domain.Course;
 import cn.edu.tute.tuteclient.httpclientservice.HttpClientService;
@@ -107,7 +110,7 @@ public class ClasstableFragment extends Fragment {
 			} 
 			TextView tv_course = (TextView) convertView.findViewById(R.id.tv_course);
 			if (getItem(position) != null) {
-    			tv_course.setText(getItem(position).getName());
+    			tv_course.setText(getItem(position).getName() + "(" + getItem(position).getClassroom() + ")");
     			Random random = new Random();
     			int r = random.nextInt(colorID.length);
     			tv_course.setBackgroundColor(getActivity().getResources().getColor(colorID[r]));
@@ -183,6 +186,7 @@ public class ClasstableFragment extends Fragment {
 			}
 			
 			gv_classtable.setAdapter(new ClasstableGridViewAdapter());
+			
 		}
 	}
 

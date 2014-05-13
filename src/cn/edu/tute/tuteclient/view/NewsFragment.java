@@ -64,16 +64,19 @@ public class NewsFragment  extends Fragment {
 		lv_news1.setEmptyView(rootView.findViewById(R.id.empty1));  
 		lv_news1.setOnItemClickListener(new NewsListClickListener(1));
 		lv_news1.setOnRefreshListener(new RefreshListener(HttpClientService.URL_NOTICE_1, lv_news1));
+		initData(HttpClientService.URL_NOTICE_1, lv_news1);
 
 		lv_news2 = (PullToRefreshListView) rootView.findViewById(R.id.lv_news2);
 		lv_news2.setEmptyView(rootView.findViewById(R.id.empty2));  
 		lv_news2.setOnItemClickListener(new NewsListClickListener(2));
 		lv_news2.setOnRefreshListener(new RefreshListener(HttpClientService.URL_NOTICE_3, lv_news2));
+		initData(HttpClientService.URL_NOTICE_3, lv_news2);
 
 		lv_news3 = (PullToRefreshListView) rootView.findViewById(R.id.lv_news3);
 		lv_news3.setEmptyView(rootView.findViewById(R.id.empty3));  
 		lv_news3.setOnItemClickListener(new NewsListClickListener(3));
 		lv_news3.setOnRefreshListener(new RefreshListener(HttpClientService.URL_NOTICE_4, lv_news3));
+		initData(HttpClientService.URL_NOTICE_4, lv_news3);
 	}
 	
 	class RefreshListener implements OnRefreshListener<ListView> {

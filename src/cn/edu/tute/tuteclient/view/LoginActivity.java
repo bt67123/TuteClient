@@ -8,7 +8,6 @@ import org.json.JSONException;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.capricorn.RayMenu;
 import com.devspark.appmsg.AppMsg;
 
 import cn.edu.tute.tuteclient.MainActivity;
@@ -16,9 +15,12 @@ import cn.edu.tute.tuteclient.R;
 import cn.edu.tute.tuteclient.domain.Person;
 import cn.edu.tute.tuteclient.httpclientservice.HttpClientService;
 import cn.edu.tute.tuteclient.service.JsonService;
+import cn.edu.tute.tuteclient.service.SharedPreferencesService;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,68 +44,99 @@ public class LoginActivity extends SherlockActivity {
     static String data="";
 	Person person = null;
 
-	Handler mHandler = new Handler(){
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			if (msg.what == 0x111) {
-				progressDialog.cancel();
-				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-				Bundle args = new Bundle();
-				args.putString("name", person.getName());
-				args.putInt("collegeID", person.getCollegeID());
-				intent.putExtras(args);
-				System.out.println("Login: " + data);
-				LoginActivity.this.startActivity(intent);
-			} else if(msg.what == 0x110) {
-				progressDialog.cancel();
-				AppMsg.makeText(LoginActivity.this, "账号或者密码有误", AppMsg.STYLE_ALERT).show();
-			}
-		}
-	};
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		
-		et_account = (EditText) findViewById(R.id.et_account);
-		et_password = (EditText) findViewById(R.id.et_password);
+		initView();
 		
 		getSupportActionBar().setDisplayShowHomeEnabled(false);
 		
 	}
 	
+	private void initView() {
+		et_account = (EditText) findViewById(R.id.et_account);
+		et_password = (EditText) findViewById(R.id.et_password);
+		
+		SharedPreferences sharedPre = getSharedPreferences("config", MODE_PRIVATE);
+		String username = sharedPre.getString("username", "");
+		String password = sharedPre.getString("password", "");
+		et_account.setText(username);
+		et_password.setText(password);
+		
+		if (!username.equals("")) {
+			et_account.setEnabled(false);
+			
+			login();
+		}
+	}
+	
 	
 	private void login() {
-		account = et_account.getText().toString();
-		password = et_password.getText().toString();
-		new Thread() {
-			@Override
-			public void run() {
-				try {
-					data = HttpClientService.getLoginData(HttpClientService.URL_LOGIN, account, password);
-					try {
-						data = data.substring(8, data.length()-1);
-						data = data.replace("\\", "");
-						person = JsonService.getPerson(data);
-    					System.out.println(data);
-    					mHandler.sendEmptyMessage(0x111);
-					} catch (JSONException e) {
-						e.printStackTrace();
-						mHandler.sendEmptyMessage(0x110);
-					}
-				} catch (ClientProtocolException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();
-		progressDialog = new ProgressDialog(LoginActivity.this);
-		progressDialog.show();
+		new LoginAsyncTask().execute();
 	} 
 	
+	
+	class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
+		boolean isValid = false;
+		
+		@Override
+		protected void onPreExecute() {
+		    account = et_account.getText().toString();
+		    password = et_password.getText().toString();
+		    
+			progressDialog = new ProgressDialog(LoginActivity.this);
+			progressDialog.show();
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			try {
+				data = HttpClientService.getLoginData(HttpClientService.URL_LOGIN, account, password);
+				try {
+					data = data.substring(8, data.length()-1);
+					data = data.replace("\\", "");
+					person = JsonService.getPerson(data);
+
+					isValid = true;
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			if (isValid) {
+				progressDialog.cancel();
+				//保存登陆信息
+				SharedPreferencesService.saveLoginInfo(LoginActivity.this, account, password);
+
+				startMainActivity();
+
+				// 退出login activity
+				finish();
+			} else {
+				progressDialog.cancel();
+				AppMsg.makeText(LoginActivity.this, "账号或者密码有误", AppMsg.STYLE_ALERT).show();
+			}
+		}
+	}
+	
+	private void startMainActivity() {
+		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+		Bundle args = new Bundle();
+		args.putString("name", person.getName());
+		args.putInt("collegeID", person.getCollegeID());
+		intent.putExtras(args);
+		LoginActivity.this.startActivity(intent);
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
