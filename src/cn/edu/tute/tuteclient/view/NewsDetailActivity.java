@@ -22,9 +22,6 @@ public class NewsDetailActivity extends SherlockActivity {
 	private CharSequence newsContent = "";
 	
 	private TextView tv_newsContent;
-	private TextView tv_title;
-	private TextView tv_person;
-	private TextView tv_pubDate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +32,9 @@ public class NewsDetailActivity extends SherlockActivity {
 
 		String newsID  = getIntent().getStringExtra("newsID");
 		new NewsDetailAsyncTask(newsID).execute(0x567);
+		
+		getSupportActionBar().setDisplayShowTitleEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
 	private void initView() {

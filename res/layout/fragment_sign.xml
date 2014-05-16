@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    <LinearLayout 
+   <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:background="@color/blue_main"
         >
-        
+
+       <Chronometer 
+           android:id="@+id/cm"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:layout_gravity="center_horizontal"
+           android:layout_marginTop="150dp"
+           android:textSize="30sp"
+           android:textColor="@color/white"
+           android:alpha="0"
+           />
     
-    <TextView
-        android:id="@+id/tv_step"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    
-    <Button 
+         <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/btn_sign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="签到"
-        />
-    </LinearLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="签到"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="150dp"
+                bootstrapbutton:bb_roundedCorners="true"
+                bootstrapbutton:bb_size="large"
+                bootstrapbutton:bb_type="success" />
+    </FrameLayout>
 
 </RelativeLayout>

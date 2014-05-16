@@ -3,27 +3,31 @@ package cn.edu.tute.tuteclient;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.special.ResideMenu.ResideMenu;
+import com.special.ResideMenu.ResideMenuItem;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import cn.edu.tute.tuteclient.view.ClasstableFragment;
 import cn.edu.tute.tuteclient.view.NewsFragment;
-import cn.edu.tute.tuteclient.view.PersonFragment;
 import cn.edu.tute.tuteclient.view.SignFragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends SherlockFragmentActivity {
 	
 	private ResideMenu resideMenu;
+	private ResideMenuItem itemSetting;
+	private TitlePageIndicator mIndicator;
 	
-	private static final String[] TITLES = new String[] { "课表", "通知", "活动签到" };
+	private static final String[] TITLES = new String[] { "课表", "通知", "活动"};
+//	private static final int[]    LOGOS  = new int[] {R.drawable.ic_grid, R.drawable.ic_tongzhi, R.drawable.ic_location};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,8 @@ public class MainActivity extends SherlockFragmentActivity {
 		initMenu();
 		
 		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		getSupportActionBar().setDisplayShowTitleEnabled(true);
+		getSupportActionBar().setTitle(TITLES[0]);
 	}
 	
 	private void initMenu() {
@@ -43,17 +49,33 @@ public class MainActivity extends SherlockFragmentActivity {
         resideMenu.setBackground(R.drawable.stars);
         resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);
+        
+        itemSetting = new ResideMenuItem(this, R.drawable.ic_settings, "设置");
+        
+        itemSetting.setOnClickListener(new MenuItemClickListener());
+        
+        resideMenu.addMenuItem(itemSetting, ResideMenu.DIRECTION_RIGHT);
+	}
+	
+	private class MenuItemClickListener implements View.OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			if (v == itemSetting) {
+				resideMenu.closeMenu();
+			}
+			
+		}
+		
 	}
 	
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
         @Override
         public void openMenu() {
-            Toast.makeText(MainActivity.this, "Menu is opened!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void closeMenu() {
-            Toast.makeText(MainActivity.this, "Menu is closed!", Toast.LENGTH_SHORT).show();
         }
     };
 	
@@ -63,10 +85,27 @@ public class MainActivity extends SherlockFragmentActivity {
         ViewPager pager = (ViewPager)findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
         pager.setAdapter(adapter);
-
-        TitlePageIndicator mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
-        mIndicator.setViewPager(pager);
+        pager.setOnPageChangeListener(new PageChangeListener());
+        
 	} 
+	
+	private class PageChangeListener implements OnPageChangeListener {
+
+		@Override
+		public void onPageScrollStateChanged(int position) {
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+			
+		}
+
+		@Override
+		public void onPageSelected(int arg0) {
+			getSupportActionBar().setTitle(TITLES[arg0]);
+		}
+		
+	}
 	
     private class PagerAdapter extends FragmentPagerAdapter {
         public PagerAdapter(FragmentManager fm) {

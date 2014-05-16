@@ -1,68 +1,79 @@
 package cn.edu.tute.tuteclient.view;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
+
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
+
 import cn.edu.tute.tuteclient.R;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Chronometer;
 
-public class SignFragment extends Fragment implements SensorEventListener {
+public class SignFragment extends Fragment {
 	
-	private TextView tv_step;
-	private Button btn_sign;
+	private BootstrapButton btn_sign;
+	private Chronometer chronometer;
+	private View rootView;
 
-	boolean flag = true;
-	float lastPoint;
-	int count = 0;
+	boolean isSign = false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_sign, container, false);
-		initView(rootView);
+		rootView = inflater.inflate(R.layout.fragment_sign, container, false);
+		initView();
 		return rootView;
 	}
 	
-	private void initView(View view) {
-		tv_step = (TextView) view.findViewById(R.id.tv_step);
-		tv_step.setText(String.valueOf(count));
+	private void initView() {
 
-		btn_sign = (Button) view.findViewById(R.id.btn_sign);
+		btn_sign = (BootstrapButton) rootView.findViewById(R.id.btn_sign);
 		btn_sign.setOnClickListener(new View.OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				SensorManager sm = (SensorManager) getActivity().getSystemService(getActivity().SENSOR_SERVICE);
-				sm.registerListener(SignFragment.this, 
-						sm.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-						SensorManager.SENSOR_DELAY_FASTEST);
+                float xValue = btn_sign.getLeft();
+                float yValue = btn_sign.getTop();
+
+				if (isSign) {
+
+                    btn_sign.setText("签到");
+                    animate(btn_sign).x(xValue).y(yValue);
+                    isSign = false;
+                    
+                    chronometer.stop();
+                    animate(chronometer).alpha(0);
+
+				} else {
+
+                    btn_sign.setText("完成");
+                    animate(btn_sign).x(xValue).y(yValue + 250);
+                    isSign = true;
+                    
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.playTogether(
+                    		ObjectAnimator.ofFloat(chronometer, "alpha", 1),
+                    		ObjectAnimator.ofFloat(chronometer, "scaleX", 1, 3f),
+                    		ObjectAnimator.ofFloat(chronometer, "scaleY", 1, 3f)
+                    );
+                    animatorSet.setDuration(500).start();
+//                    animate(chronometer).alpha(1);
+                    chronometer.setBase(SystemClock.elapsedRealtime());
+                    chronometer.start();
+
+				}
 			}
 		});
+        animate(btn_sign).setDuration(500);
+        
+        
+        chronometer = (Chronometer) rootView.findViewById(R.id.cm);
 	}
 
-	@Override
-	public void onSensorChanged(SensorEvent event) {
-		if (flag) {
-			lastPoint = event.values[1];
-			flag = false;
-		} 
-		if (Math.abs(event.values[1] - lastPoint) > 8) {
-			lastPoint = event.values[1];
-			tv_step.setText(String.valueOf(++count));
-		}
-		
-	}
 
-	@Override
-	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub
-		
-	}
 }

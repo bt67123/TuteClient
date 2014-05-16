@@ -16,6 +16,7 @@ import cn.edu.tute.tuteclient.R;
 import cn.edu.tute.tuteclient.domain.News;
 import cn.edu.tute.tuteclient.httpclientservice.HttpClientService;
 import cn.edu.tute.tuteclient.service.JsonService;
+import android.R.anim;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -34,6 +35,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TabHost;
+import android.widget.TabWidget;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewsFragment  extends Fragment {
@@ -103,6 +106,12 @@ public class NewsFragment  extends Fragment {
 		tabHost.addTab(tab1);
 		tabHost.addTab(tab2);
 		tabHost.addTab(tab3);
+
+		TabWidget tabWidget = (TabWidget) tabHost.getTabWidget();
+		for (int i = 0; i < tabWidget.getChildCount(); i++) {
+			TextView tv = (TextView) tabWidget.getChildAt(i).findViewById(android.R.id.title);
+			tv.setTextColor(rootView.getResources().getColor(R.color.blue_main));
+		}
 	}
 	
 	class NewsListClickListener implements OnItemClickListener {

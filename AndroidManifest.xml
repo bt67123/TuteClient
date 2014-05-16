@@ -35,7 +35,7 @@
         <activity
             android:theme="@style/Theme.DEMO"
             android:name="cn.edu.tute.tuteclient.view.NewsDetailActivity"    
-            android:label="@string/app_name"
+            android:label="@string/news"
             />
     </application>
     

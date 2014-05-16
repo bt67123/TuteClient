@@ -50,17 +50,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <com.viewpagerindicator.TitlePageIndicator
+<!--     <com.viewpagerindicator.TitlePageIndicator
         android:id="@+id/indicator"
         android:padding="10dip"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:background="@color/white"
+        android:textSize="25sp"
         app:footerIndicatorHeight="3dp"
         app:footerIndicatorStyle="triangle"
-        android:textColor="#AA000000"
-        app:selectedColor="#FF000000"
-        />
+        android:textColor="#FFFFFFFF"
+        app:selectedColor="@color/blue_main"
+        app:footerColor="@color/blue_main"
+        /> -->
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="fill_parent"
