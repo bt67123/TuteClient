@@ -2,13 +2,17 @@ package cn.edu.tute.tuteclient;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.special.ResideMenu.ResideMenu;
-import com.special.ResideMenu.ResideMenuItem;
-import com.viewpagerindicator.TitlePageIndicator;
+import com.astuetz.PagerSlidingTabStrip;
+import com.devspark.appmsg.AppMsg;
 
 import cn.edu.tute.tuteclient.view.ClasstableFragment;
+import cn.edu.tute.tuteclient.view.MoreFragment;
 import cn.edu.tute.tuteclient.view.NewsFragment;
 import cn.edu.tute.tuteclient.view.SignFragment;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,19 +20,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends SherlockFragmentActivity {
 	
-	private ResideMenu resideMenu;
-	private ResideMenuItem itemSetting;
-	private TitlePageIndicator mIndicator;
+	private PagerSlidingTabStrip tabs;
 	
-	private static final String[] TITLES = new String[] { "课表", "通知", "活动"};
-//	private static final int[]    LOGOS  = new int[] {R.drawable.ic_grid, R.drawable.ic_tongzhi, R.drawable.ic_location};
+	private static final String[] TITLES = new String[] { "课表", "通知", "活动", "更多"};
 
+    public static LocationManager locationManager;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,48 +36,39 @@ public class MainActivity extends SherlockFragmentActivity {
 		
 		initView();
 		
-		initMenu();
+		initLocationService();
 		
-		getSupportActionBar().setDisplayShowHomeEnabled(false);
-		getSupportActionBar().setDisplayShowTitleEnabled(true);
-		getSupportActionBar().setTitle(TITLES[0]);
+		getSupportActionBar().hide();
 	}
 	
-	private void initMenu() {
-		// attach to current activity;
-        resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.drawable.stars);
-        resideMenu.attachToActivity(this);
-        resideMenu.setMenuListener(menuListener);
-        
-        itemSetting = new ResideMenuItem(this, R.drawable.ic_settings, "设置");
-        
-        itemSetting.setOnClickListener(new MenuItemClickListener());
-        
-        resideMenu.addMenuItem(itemSetting, ResideMenu.DIRECTION_RIGHT);
-	}
-	
-	private class MenuItemClickListener implements View.OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			if (v == itemSetting) {
-				resideMenu.closeMenu();
+	private void initLocationService() {
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE); 
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 8, new LocationListener() {
+			
+			@Override
+			public void onStatusChanged(String provider, int status, Bundle extras) {
+				System.out.println("-->statuschanged");
 			}
 			
-		}
-		
+			@Override
+			public void onProviderEnabled(String provider) {
+				System.out.println("-->enabled");
+				
+			}
+			
+			@Override
+			public void onProviderDisabled(String provider) {
+				System.out.println("-->disenabled");
+				
+			}
+			
+			@Override
+			public void onLocationChanged(Location location) {
+                AppMsg.makeText(MainActivity.this, "经度：" + location.getLongitude() + " 纬度：" + location.getLatitude(), AppMsg.STYLE_INFO).show();
+				System.out.println("-->locationchanged");
+			}
+		});
 	}
-	
-    private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
-        @Override
-        public void openMenu() {
-        }
-
-        @Override
-        public void closeMenu() {
-        }
-    };
 	
 	private void initView() {
         FragmentPagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
@@ -87,6 +78,9 @@ public class MainActivity extends SherlockFragmentActivity {
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(new PageChangeListener());
         
+		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabStrip);
+		tabs.setIndicatorColor(getResources().getColor(R.color.white1));
+		tabs.setViewPager(pager);
 	} 
 	
 	private class PageChangeListener implements OnPageChangeListener {
@@ -123,16 +117,10 @@ public class MainActivity extends SherlockFragmentActivity {
 				fragment = new NewsFragment();
 				return fragment;
 			case 2:
-//				fragment = new PersonFragment();
-//				Bundle args = new Bundle();
-//				Intent intent = getIntent();
-//				Bundle bundle = intent.getExtras();
-//				String personName= bundle.getString("name");
-//				int collegeID = bundle.getInt("collegeID");
-//				args.putString("name", personName);
-//				args.putInt("collegeID", collegeID);
-//				fragment.setArguments(args);
 				fragment = new SignFragment();
+				return fragment;
+			case 3:
+				fragment = new MoreFragment();
 				return fragment;
 			}
         	return null;
@@ -148,14 +136,6 @@ public class MainActivity extends SherlockFragmentActivity {
         	return TITLES.length;
         }
     }
-    
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-    	if (resideMenu.isOpened()) {
-            return resideMenu.onInterceptTouchEvent(ev) || super.dispatchTouchEvent(ev);
-		} 
-    	return super.dispatchTouchEvent(ev);
-    }
 	
 	@Override
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
@@ -165,20 +145,12 @@ public class MainActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_settings:
-			resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
-			break;
-
-		default:
-			break;
-		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
+		//为了修复某个bug，忘了。。。
 //		super.onSaveInstanceState(outState);
 	}
 	
@@ -187,16 +159,12 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if(keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
-	    	if (resideMenu.isOpened()) {
-	    		resideMenu.closeMenu();
-			} else {
 				if (System.currentTimeMillis()-exitTime > 2000) {
 					Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
     				exitTime = System.currentTimeMillis();
 				} else {
 					System.exit(0);
 				}
-			}
 	        return true;
 	    } else if(keyCode == KeyEvent.KEYCODE_MENU) {
 	        //监控/拦截菜单键

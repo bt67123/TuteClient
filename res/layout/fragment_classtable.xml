@@ -56,20 +56,20 @@
         </TableRow>
     </TableLayout>
     
-    <LinearLayout
+    <View
         android:id="@+id/space"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/title"
-        android:background="@color/blue_main"/>
-    
+        android:background="#19000000"/> 
+
 <GridView 
     android:id="@+id/gv_classtable"
     android:numColumns="5"  
     android:stretchMode="columnWidth"
     android:horizontalSpacing="0dp"
     android:verticalSpacing="1dp"
-    android:background="@color/blue_main"
+    android:background="#19000000"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@id/space" 

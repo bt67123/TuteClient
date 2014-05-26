@@ -65,7 +65,6 @@ public class HttpClientService {
 		result = result.substring(8, result.length()-1);
 
 		result = result.replace("\r\n", "").replace("\\\"", "\"").replace("\\\\", "\\");
-		System.out.println(result);
 		return result;
 	}
 	

@@ -1,12 +1,16 @@
 package cn.edu.tute.tuteclient.view;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.devspark.appmsg.AppMsg;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
+import cn.edu.tute.tuteclient.MainActivity;
 import cn.edu.tute.tuteclient.R;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
@@ -62,10 +66,15 @@ public class SignFragment extends Fragment {
                     		ObjectAnimator.ofFloat(chronometer, "scaleY", 1, 3f)
                     );
                     animatorSet.setDuration(500).start();
-//                    animate(chronometer).alpha(1);
                     chronometer.setBase(SystemClock.elapsedRealtime());
                     chronometer.start();
 
+                    Location location = MainActivity.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (location != null) {
+                    	AppMsg.makeText(getActivity(), "经度：" + location.getLongitude() + " 纬度：" + location.getLatitude(), AppMsg.STYLE_INFO).show();
+					} else {
+                    	AppMsg.makeText(getActivity(), "无法获取位置", AppMsg.STYLE_INFO).show();
+					}
 				}
 			}
 		});

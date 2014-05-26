@@ -16,7 +16,7 @@
            android:layout_height="wrap_content"
            android:gravity="center"
            android:layout_gravity="center_horizontal"
-           android:layout_marginTop="150dp"
+           android:layout_marginTop="200dp"
            android:textSize="30sp"
            android:textColor="@color/white"
            android:alpha="0"
@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="签到"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="200dp"
                 bootstrapbutton:bb_roundedCorners="true"
                 bootstrapbutton:bb_size="large"
                 bootstrapbutton:bb_type="success" />

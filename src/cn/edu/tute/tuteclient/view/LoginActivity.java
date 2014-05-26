@@ -16,6 +16,7 @@ import cn.edu.tute.tuteclient.domain.Person;
 import cn.edu.tute.tuteclient.httpclientservice.HttpClientService;
 import cn.edu.tute.tuteclient.service.JsonService;
 import cn.edu.tute.tuteclient.service.SharedPreferencesService;
+import cn.jpush.android.api.JPushInterface;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -32,8 +33,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class LoginActivity extends SherlockActivity {
-		private static final int[] ITEM_DRAWABLES = { R.drawable.composer_camera, R.drawable.composer_music,
-			R.drawable.composer_place, R.drawable.composer_sleep, R.drawable.composer_thought, R.drawable.composer_with };
 	
 	private EditText et_account;
 	private EditText et_password;
@@ -49,10 +48,31 @@ public class LoginActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		
+		initJPush();
+
 		initView();
 		
 		getSupportActionBar().setDisplayShowHomeEnabled(false);
 		
+	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		JPushInterface.onResume(this);
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		JPushInterface.onPause(this);
+	}
+
+	private void initJPush() {
+		JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
 	}
 	
 	private void initView() {
