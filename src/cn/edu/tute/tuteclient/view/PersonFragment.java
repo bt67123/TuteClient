@@ -1,6 +1,6 @@
 package cn.edu.tute.tuteclient.view;
 
-import cn.edu.tute.tuteclient.domain.Person;
+import cn.edu.tute.tuteclient.domain.User;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class PersonFragment extends Fragment {
 	
-	Person person;
+	User person;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -21,7 +21,7 @@ public class PersonFragment extends Fragment {
 		textView.setWidth(200);
 		textView.setTextSize(28);
 		Bundle args = getArguments();
-		person = new Person(args.getString("name"), args.getInt("collegeID"));
+		person = new User(args.getString("name"), args.getInt("collegeID"));
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("姓名: ");
 		buffer.append(person.getName() + "\n");

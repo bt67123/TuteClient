@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -9,33 +10,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
-        
+        android:orientation="vertical" >
 
-                <EditText
-                    android:id="@+id/et_account"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/account"
-                    android:inputType="number" 
-                    android:drawableLeft="@drawable/ic_user_32"
-                    android:drawablePadding="8dp"/>
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_user_32"
+            android:drawablePadding="8dp"
+            android:hint="@string/account"
+            android:inputType="number" />
 
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_password_32"
+            android:drawablePadding="8dp"
+            android:hint="@string/password"
+            android:password="true" />
 
-                <EditText
-                    android:id="@+id/et_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/password"
-                    android:password="true" 
-                    android:drawableLeft="@drawable/ic_password_32"
-                    android:drawablePadding="8dp"
-                    />
+        <Spinner
+            android:id="@+id/sp_user"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp" />
 
-
-
-
+        <com.dd.CircularProgressButton
+            android:id="@+id/btn_login"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:cpb_cornerRadius="48dp"
+            app:cpb_iconComplete="@drawable/ic_action_accept"
+            app:cpb_iconError="@drawable/ic_action_cancel"
+            app:cpb_textIdle="@string/login" />
     </LinearLayout>
-            
 
 </RelativeLayout>

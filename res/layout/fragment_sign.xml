@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
+    android:background="@color/blue_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+
+   <com.baidu.mapapi.map.MapView 
+       android:id="@+id/bmapsView"  
+       android:layout_width="fill_parent"  
+       android:layout_height="350dp"  
+       android:clickable="true" 
+       />  
     
    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/blue_main"
+        android:layout_height="300dp"
+       android:layout_marginTop="380dp"
         >
+        
 
        <Chronometer 
            android:id="@+id/cm"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
+           android:layout_marginTop="18dp"
            android:gravity="center"
            android:layout_gravity="center_horizontal"
-           android:layout_marginTop="200dp"
            android:textSize="30sp"
            android:textColor="@color/white"
            android:alpha="0"
@@ -28,7 +37,6 @@
                 android:layout_height="wrap_content"
                 android:text="签到"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="200dp"
                 bootstrapbutton:bb_roundedCorners="true"
                 bootstrapbutton:bb_size="large"
                 bootstrapbutton:bb_type="success" />

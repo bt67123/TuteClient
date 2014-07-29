@@ -3,12 +3,13 @@ package cn.edu.tute.tuteclient;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
+import com.baidu.mapapi.BMapManager;
 import com.devspark.appmsg.AppMsg;
 
 import cn.edu.tute.tuteclient.view.ClasstableFragment;
 import cn.edu.tute.tuteclient.view.MoreFragment;
 import cn.edu.tute.tuteclient.view.NewsFragment;
-import cn.edu.tute.tuteclient.view.SignFragment;
+import cn.edu.tute.tuteclient.view.AttendFragment;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -29,9 +30,15 @@ public class MainActivity extends SherlockFragmentActivity {
 	private static final String[] TITLES = new String[] { "课表", "通知", "活动", "更多"};
 
     public static LocationManager locationManager;
+    
+    public BMapManager bMapManager; 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		initBaiduMap();
+
 		setContentView(R.layout.activity_main);
 		
 		initView();
@@ -39,6 +46,11 @@ public class MainActivity extends SherlockFragmentActivity {
 		initLocationService();
 		
 		getSupportActionBar().hide();
+	}
+	
+	private void initBaiduMap() {
+		bMapManager = new BMapManager(getApplication());
+		bMapManager.init(null);
 	}
 	
 	private void initLocationService() {
@@ -117,7 +129,7 @@ public class MainActivity extends SherlockFragmentActivity {
 				fragment = new NewsFragment();
 				return fragment;
 			case 2:
-				fragment = new SignFragment();
+				fragment = new AttendFragment();
 				return fragment;
 			case 3:
 				fragment = new MoreFragment();
