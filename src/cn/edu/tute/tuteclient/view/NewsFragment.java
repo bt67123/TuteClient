@@ -101,17 +101,44 @@ public class NewsFragment  extends Fragment {
 		TabHost tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
 		tabHost.setup();
 		TabSpec tab1 = tabHost.newTabSpec("tab1").setIndicator("学院公告").setContent(R.id.tab1);
-		TabSpec tab2 = tabHost.newTabSpec("tab1").setIndicator("相关公告").setContent(R.id.tab2);
-		TabSpec tab3 = tabHost.newTabSpec("tab1").setIndicator("紧急通知").setContent(R.id.tab3);
+		TabSpec tab2 = tabHost.newTabSpec("tab2").setIndicator("相关公告").setContent(R.id.tab2);
+		TabSpec tab3 = tabHost.newTabSpec("tab3").setIndicator("紧急通知").setContent(R.id.tab3);
 		tabHost.addTab(tab1);
 		tabHost.addTab(tab2);
 		tabHost.addTab(tab3);
 
+
 		TabWidget tabWidget = (TabWidget) tabHost.getTabWidget();
+		final TextView tv1 = (TextView) tabWidget.getChildAt(0).findViewById(android.R.id.title);
+		final TextView tv2 = (TextView) tabWidget.getChildAt(1).findViewById(android.R.id.title);
+		final TextView tv3 = (TextView) tabWidget.getChildAt(2).findViewById(android.R.id.title);
+		tv1.setTextColor(rootView.getResources().getColor(R.color.white));
+		tv2.setTextColor(rootView.getResources().getColor(R.color.blue_main));
+		tv3.setTextColor(rootView.getResources().getColor(R.color.blue_main));
 		for (int i = 0; i < tabWidget.getChildCount(); i++) {
-			TextView tv = (TextView) tabWidget.getChildAt(i).findViewById(android.R.id.title);
-			tv.setTextColor(rootView.getResources().getColor(R.color.blue_main));
+			
+			tabWidget.getChildAt(i).setBackgroundResource(R.drawable.tab_indicator);
 		}
+		
+		tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+			
+			@Override
+			public void onTabChanged(String tabId) {
+				if (tabId.equals("tab1")) {
+					tv1.setTextColor(rootView.getResources().getColor(R.color.white));
+					tv2.setTextColor(rootView.getResources().getColor(R.color.blue_main));
+					tv3.setTextColor(rootView.getResources().getColor(R.color.blue_main));
+				} else if (tabId.equals("tab2")) {
+					tv1.setTextColor(rootView.getResources().getColor(R.color.blue_main));
+					tv2.setTextColor(rootView.getResources().getColor(R.color.white));
+					tv3.setTextColor(rootView.getResources().getColor(R.color.blue_main));	
+				} else if (tabId.equals("tab3")) {
+					tv1.setTextColor(rootView.getResources().getColor(R.color.blue_main));
+					tv2.setTextColor(rootView.getResources().getColor(R.color.blue_main));
+					tv3.setTextColor(rootView.getResources().getColor(R.color.white));	
+				}
+			}
+		});
 	}
 	
 	class NewsListClickListener implements OnItemClickListener {

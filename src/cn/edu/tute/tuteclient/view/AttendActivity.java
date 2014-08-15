@@ -1,14 +1,15 @@
 package cn.edu.tute.tuteclient.view;
 
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -20,32 +21,24 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationOverlay;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
-
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 import cn.edu.tute.tuteclient.R;
 import cn.edu.tute.tuteclient.domain.AttendStatus;
 import cn.edu.tute.tuteclient.domain.Switch;
 import cn.edu.tute.tuteclient.httpclientservice.HttpClientService;
 import cn.edu.tute.tuteclient.service.JsonService;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Chronometer;
 
-public class AttendFragment extends Fragment {
-
+public class AttendActivity extends SherlockActivity {
 	private BootstrapButton btn_attend;
 	private Chronometer chronometer;
-
-	private View rootView;
 
 	boolean isAttend = false;
 
@@ -60,12 +53,18 @@ public class AttendFragment extends Fragment {
 	MyLocationOverlay myLocationOverlay = null;
 	LocationData locationData = null;
 
+	public static void startAttendActivity(Context context) {
+		Intent intent = new Intent(context, AttendActivity.class);
+		context.startActivity(intent);
+	}
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.activity_attend, container, false);
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_attend);
+
 		initView();
-		return rootView;
 	}
 
 	private void initView() {
@@ -78,11 +77,11 @@ public class AttendFragment extends Fragment {
 	 * init 计时器
 	 */
 	private void initChronometer() {
-		btn_attend = (BootstrapButton) rootView.findViewById(R.id.btn_sign);
+		btn_attend = (BootstrapButton) findViewById(R.id.btn_sign);
 		btn_attend.setOnClickListener(new AttendBtnClickListener());
 		animate(btn_attend).setDuration(500);
 
-		chronometer = (Chronometer) rootView.findViewById(R.id.cm);
+		chronometer = (Chronometer) findViewById(R.id.cm);
 	}
 
 	private class AttendBtnClickListener implements View.OnClickListener {
@@ -130,8 +129,8 @@ public class AttendFragment extends Fragment {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			dialog = ProgressDialog.show(getActivity(), "wait", "wait...",
-					false);
+			dialog = ProgressDialog.show(AttendActivity.this, "wait",
+					"wait...", false);
 		}
 
 		@Override
@@ -189,7 +188,7 @@ public class AttendFragment extends Fragment {
 	}
 
 	private void initMap() {
-		mMapView = (MapView) rootView.findViewById(R.id.bmapsView);
+		mMapView = (MapView) findViewById(R.id.bmapsView);
 		mMapView.setBuiltInZoomControls(true);
 		// 设置启用内置的缩放控件
 		mMapController = mMapView.getController();
@@ -200,7 +199,7 @@ public class AttendFragment extends Fragment {
 		mMapController.setCenter(point);// 设置地图中心点
 		mMapController.setZoom(12);// 设置地图zoom级别
 
-		mLocationClient = new LocationClient(getActivity());// 声明LocationClient类
+		mLocationClient = new LocationClient(AttendActivity.this);// 声明LocationClient类
 		mLocationClient.registerLocationListener(myListener); // 注册监听函数
 		LocationClientOption option = new LocationClientOption();
 		option.setLocationMode(LocationMode.Hight_Accuracy);// 设置定位模式

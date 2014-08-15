@@ -8,8 +8,8 @@ import org.json.JSONException;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.dd.CircularProgressButton;
 import com.devspark.appmsg.AppMsg;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import cn.edu.tute.tuteclient.MainActivity;
 import cn.edu.tute.tuteclient.R;
@@ -18,24 +18,19 @@ import cn.edu.tute.tuteclient.httpclientservice.HttpClientService;
 import cn.edu.tute.tuteclient.service.JsonService;
 import cn.edu.tute.tuteclient.service.SharedPreferencesService;
 import cn.jpush.android.api.JPushInterface;
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class LoginActivity extends SherlockActivity {
 
@@ -43,7 +38,7 @@ public class LoginActivity extends SherlockActivity {
 	private EditText et_password;
 	private ProgressDialog progressDialog;
 	private Spinner sp_user;
-	private CircularProgressButton btn_login;
+	private Button btn_login;
 
 	static String account = "";
 	static String password = "";
@@ -56,6 +51,8 @@ public class LoginActivity extends SherlockActivity {
 		setContentView(R.layout.activity_login);
 
 		initJPush();
+		
+		initSystemBar();
 
 		initView();
 
@@ -82,6 +79,14 @@ public class LoginActivity extends SherlockActivity {
 		JPushInterface.setDebugMode(true);
 		JPushInterface.init(this);
 	}
+	
+	private void initSystemBar() {
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+	        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+	        tintManager.setStatusBarTintEnabled(true);
+	        tintManager.setStatusBarTintResource(R.color.blue_main);
+	    }
+	}
 
 	private void initView() {
 		et_account = (EditText) findViewById(R.id.et_account);
@@ -107,8 +112,7 @@ public class LoginActivity extends SherlockActivity {
 		sp_user.setAdapter(adapter);
 		sp_user.setOnItemSelectedListener(new SpinnerItemSelectedListener());
 
-		btn_login = (CircularProgressButton) findViewById(R.id.btn_login);
-        btn_login.setIndeterminateProgressMode(true);
+		btn_login = (Button) findViewById(R.id.btn_login);
 		btn_login.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -122,8 +126,8 @@ public class LoginActivity extends SherlockActivity {
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
-			Toast.makeText(LoginActivity.this, position + "",
-					Toast.LENGTH_SHORT).show();
+//			Toast.makeText(LoginActivity.this, position + "",
+//					Toast.LENGTH_SHORT).show();
 		}
 
 		@Override
@@ -183,7 +187,8 @@ public class LoginActivity extends SherlockActivity {
 				SharedPreferencesService.saveLoginInfo(LoginActivity.this,
 						account, password);
 
-				startMainActivity();
+			MainActivity.startMainActivity(LoginActivity.this, user);
+//				RegisterActivity.startRegisterActivity(LoginActivity.this);
 
 				// 退出login activity
 				finish();
@@ -196,14 +201,6 @@ public class LoginActivity extends SherlockActivity {
 		}
 	}
 
-	private void startMainActivity() {
-		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-		Bundle args = new Bundle();
-		args.putString("name", user.getName());
-		args.putInt("collegeID", user.getCollegeID());
-		intent.putExtras(args);
-		LoginActivity.this.startActivity(intent);
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -214,9 +211,6 @@ public class LoginActivity extends SherlockActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.menu_check:
-			login();
-			break;
 
 		default:
 			break;

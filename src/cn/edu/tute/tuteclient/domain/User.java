@@ -1,7 +1,9 @@
 package cn.edu.tute.tuteclient.domain;
 
+import java.io.Serializable;
 
-public class User {
+
+public class User implements Serializable {
 
 	private String ID;
 	private String name;

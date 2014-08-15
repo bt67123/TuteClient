@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
+    <style name="AppBaseTheme" parent="android:Theme.Black">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -17,26 +17,31 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
-    
-    
-    <!-- 继承ActionBar父类样式-->
-    <style name="Theme.DEMO" parent="Theme.Sherlock.Light">
+    <!-- 继承ActionBar父类样式 -->
+    <style name="Theme.DEMO" parent="Theme.Sherlock.Light.DarkActionBar">
         <item name="actionBarStyle">@style/Widget.DEMO.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.DEMO.ActionBar</item>
-    </style> 
+        
+        <!-- 取消actionbar阴影 -->
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- translucent system bars -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
     <!-- 标题栏的样式  为了兼容考虑，所有样式的相关item需要写2遍 -->
-    <style name="Widget.DEMO.ActionBar" parent="Widget.Sherlock.ActionBar.Solid">   
-        <item name="background">#1791d2</item>
-        <item name="backgroundStacked">#1791d2</item>
-        <item name="backgroundSplit">#1791d2</item>
+    <style name="Widget.DEMO.ActionBar" parent="Widget.Sherlock.ActionBar.Solid">
+        <item name="background">@color/blue_main</item>
+        <item name="backgroundStacked">@color/blue_main</item>
+        <item name="backgroundSplit">@color/blue_main</item>
         <item name="titleTextStyle">@style/Widget.DEMO.ActionBar.Title</item>
-        <item name="android:background">#1791d2</item>
-        <item name="android:backgroundStacked">#1791d2</item>
-        <item name="android:backgroundSplit">#1791d2</item>
+        <item name="android:background">@color/blue_main</item>
+        <item name="android:backgroundStacked">@color/blue_main</item>
+        <item name="android:backgroundSplit">@color/blue_main</item>
         <item name="android:titleTextStyle">@style/Widget.DEMO.ActionBar.Title</item>
     </style>
     <!-- 标题栏的标题样式 -->
     <style name="Widget.DEMO.ActionBar.Title" parent="@android:TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">#fff</item>
     </style>
+
 </resources>

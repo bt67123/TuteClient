@@ -1,4 +1,4 @@
-<!-- 
+<!--
 <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,11 +19,11 @@
         />
 
 </android.support.v4.view.ViewPager>
+-->
 
- -->
- 
- 
-<!-- <RelativeLayout
+
+<!--
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,44 +40,38 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         />
-</RelativeLayout> -->
+</RelativeLayout>
+-->
 
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:app1="http://schemas.android.com/apk/res/cn.edu.tute.tuteclient"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="@color/grey_system"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true" >
 
-<!--     <com.viewpagerindicator.TitlePageIndicator
-        android:id="@+id/indicator"
-        android:padding="10dip"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:background="@color/white"
-        android:textSize="25sp"
-        app:footerIndicatorHeight="3dp"
-        app:footerIndicatorStyle="triangle"
-        android:textColor="#FFFFFFFF"
-        app:selectedColor="@color/blue_main"
-        app:footerColor="@color/blue_main"
-        /> -->
-        
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabStrip"
         android:layout_width="match_parent"
-        android:layout_height="48dip"
-        android:background="@color/blue_main"
-        android:textColor="@color/white"
-        />
-    
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:background="@color/white"
+        android:textSize="16sp"
+        app:pstsDividerColor="#00000000"
+        app:pstsIndicatorColor="@color/blue_main"
+        app1:pstsShouldExpand="true"
+        app:pstsUnderlineHeight="1dp"
+        app1:pstsIndicatorHeight="4dp" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/white"
-        />
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabStrip" 
+        >
+    </android.support.v4.view.ViewPager>
 
-</LinearLayout>
+
+</RelativeLayout>

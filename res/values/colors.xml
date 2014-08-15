@@ -11,8 +11,11 @@
     <color name="red2">#aa4630</color>
     <color name="red3">#e98d70</color>
 
+    <color name="blue_main3">#303BA7</color>
+    <color name="blue_main2">#FF33B5E6</color>
     <color name="blue_main">#1791d2</color>
     <color name="blue_dan">#b8e5f9</color>
+    <color name="grey_system">#ededed</color>
 
 
     <color name="lg1">#109eff</color>

@@ -1,18 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/menu_me"
+        android:icon="@drawable/ic_me2"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="@string/action_settings"
-        android:icon="@drawable/menu_64"
-        >
-<!--         <menu >
-            <item 
-                android:title="检查更新"/>
-            
+        android:title="@string/action_settings">
+<!--         <menu>
+            <item android:id="@+id/menu_me" android:title="个人信息"/>
+            <item android:title="检查更新"/>
         </menu> -->
-        
     </item>
+    
+
 
 </menu>

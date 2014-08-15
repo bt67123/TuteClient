@@ -5,8 +5,11 @@ import java.io.IOException;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 
+import android.R.anim;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
@@ -15,8 +18,13 @@ import android.widget.TextView;
 import cn.edu.tute.tuteclient.R;
 import cn.edu.tute.tuteclient.httpclientservice.HttpClientService;
 import cn.edu.tute.tuteclient.service.JsonService;
+import cn.edu.tute.tuteclient.util.SystemBarTintUtil;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.readystatesoftware.systembartint.SystemBarTintManager.SystemBarConfig;
 
 public class NewsDetailActivity extends SherlockActivity {
 	private CharSequence newsContent = "";
@@ -29,13 +37,18 @@ public class NewsDetailActivity extends SherlockActivity {
 		setContentView(R.layout.activity_news_detail);
 		
 		initView();
+		
+		SystemBarTintUtil.initSystemBar(this);
 
 		String newsID  = getIntent().getStringExtra("newsID");
 		new NewsDetailAsyncTask(newsID).execute(0x567);
 		
 		getSupportActionBar().setDisplayShowTitleEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
 	}
+	
+
 	
 	private void initView() {
 		String title   = getIntent().getStringExtra("title");
@@ -86,5 +99,13 @@ public class NewsDetailActivity extends SherlockActivity {
 			tv_newsContent.setText(newsContent);
 		}
 		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }
